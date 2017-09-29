@@ -1,0 +1,10 @@
+digraph G {
+    dpi="1000";
+    size="1,1";
+    "e4:8d:8c:b9:dc:b6" -> "01:80:c2:00:00:00" [ label="138" ];
+    "ac:bc:32:cc:72:db" -> "e4:8d:8c:b9:dc:b6" [ label="16128" ];
+    "ac:bc:32:cc:72:db" -> "01:00:5e:7f:ff:fa" [ label="20" ];
+    "e4:8d:8c:b9:dc:b6" -> "ff:ff:ff:ff:ff:ff" [ label="6" ];
+    "e4:8d:8c:b9:dc:b6" -> "01:00:0c:cc:cc:cc" [ label="6" ];
+    "e4:8d:8c:b9:dc:b6" -> "ac:bc:32:cc:72:db" [ label="22371" ];
+}

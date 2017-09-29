@@ -1,0 +1,90 @@
+\begin{tikzpicture}
+
+    \tikzset{vertex/.style = {shape=circle,draw,thick,minimum size=2em,font=\tiny}}
+    \tikzset{NoDistinguido/.style = {shape=circle,draw,thick,minimum size=2em,font=\tiny}}
+    \tikzset{Distinguido/.style = {shape=circle,draw,red,thick,minimum size=2em,font=\scriptsize}}
+    \tikzset{myCloud/.style = {shape=cloud,draw, cloud puffs=10,cloud puff arc=110, aspect=2, inner ysep=0.5em}}
+
+    \tikzset{myCloudSmaller/.style = {shape=cloud,draw, cloud puffs=9,cloud puff arc=110, aspect=3, inner ysep=0em, inner xsep=0em}}
+    \tikzset{flecha/.style = {->,>=stealth,sloped,auto=false}}
+
+    \node [NoDistinguido] (router1) at (3,0) {192.168.0.1};
+    \node [Distinguido] (nodo129) at (3,5) {192.168.0.129};
+    \draw [flecha] (router1)
+        to node[above] {354} (nodo129);
+
+
+    \node [NoDistinguido] (router2) at (-3,1) {192.168.0.2};
+
+
+    %IPs 173, 163
+    \node [myCloudSmaller] (NubeE) at (0,6) {2 vértices};
+    \draw [flecha] (router2)
+        to node[above] {3} (NubeE);
+    \draw [flecha] (NubeE)
+        to node[above] {29} (router1);
+
+
+    %IPS 114, 118,  121, 122,  123, 145, 164, 178
+    \node [myCloud] (NubeA) at (1,-1.5) {6 vértices};
+    \draw [flecha] (NubeA)
+        to node[above] {19} (router1);
+    \draw [flecha] (NubeA)
+        to [bend left=10] node[above] {17} (router2);
+    \draw [flecha] (router2)
+        to [bend left=10] node[above] {2} (NubeA);
+
+
+    %IPs 177, 153 y 168
+    \node [myCloudSmaller] (NubeB) at (0.5,-4) {3 vértices};
+    \draw [flecha] (NubeB)
+            to[bend left=5] node[above] {13} (router2);
+
+
+    \node [myCloudSmaller] (NubeF) at (2.5,-4) {2 vértices};
+    \draw [flecha] (NubeF)
+         to node[above] {3} (router1);
+    \draw [flecha] (NubeF)
+         to[bend left=5] node[above] {7} (router2);
+    \draw [flecha] (NubeF)
+        to node[above] {3} (NubeA);
+    \path[->,flecha] (NubeF)
+            edge [loop below] node [above] {3} ();
+
+
+    %IPs 102, 116, 139 y 154
+    \node [myCloud] (NubeC) at (1,-7) {4 vértices};
+    \draw [flecha] (router2)
+        to node[above] {2} (NubeC);
+    \draw [flecha] (NubeF)
+        to node[above] {14} (NubeC);
+
+
+    %IPs 109, 137
+    \node[myCloudSmaller] (NubeD) at (-3,4) {2 vértices};
+    \draw [flecha] (NubeD)
+        to [bend left=5] node[above] {3} (router1);
+    \draw [flecha] (NubeD)
+        to node[above] {6} (router2);
+    \draw [flecha] (NubeD)
+        to node[above] {2} (NubeE);
+
+
+    \node [NoDistinguido] (nodo149) at (0,1) {192.168.0.149};
+    \draw [flecha] (nodo149)
+        to node[above] {8} (NubeE);
+    \draw [flecha] (nodo149)
+        to [bend right=15]  node[above] {8} (router2);
+    \draw [flecha] (router2)
+        to [bend right=15]  node[above] {8} (nodo149);
+    \draw [flecha] (router1)
+        to node[above] {41} (nodo149);
+
+
+    \node [NoDistinguido] (nodo167) at (-2,-4) {192.168.0.167};
+    \draw [flecha] (router2)
+        to node[above] {1} (nodo167);
+    \path[->,flecha] (nodo167)
+            edge [loop below] node [above] {6} ();
+
+\end{tikzpicture}

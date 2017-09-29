@@ -1,0 +1,122 @@
+\section{\textbf{Resultados}}
+
+\subsection{\textbf{Fuente \textit{S}}}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c | c | c }
+	   & ComercioLibre & CoinFactory & Café & Cumpleaños \\ \hline
+	  \textit{I}($\SimbBroadcast$) & 5.13 & 4.54 & 0.00577 & 0.53 \\ 
+	  \textit{I}($\SimbUnicast$) & 0.04 & 0.06 & 0.994 & 1.68 \\ 
+	  \textit{H(S)} & 0.187 & 0.256 & 0.051 & 0.894 \\ 
+	  $N$ &  & 47 & aa & 26 \\ 
+	  $M$ & 14675 & 12621 & 77274 & 3812 \\
+	\end{tabular}
+\end{center}
+
+Donde $N$ es la cantidad de nodos identificados y $M$ la de mensajes leídos durante la captura. Consideramos como conjunto de \textit{nodos} al conjunto de \textit{MACs} de origen distintas.
+
+Suponiendo que los nodos en las redes se comportan de manera similar, los datos sugieren que cuantos más nodos hay en la red la probabilidad de \textit{S} de emitir $\SimbBroadcast$ disminuye y la información que este símbolo aporta aumenta. En cambio, una menor cantidad de nodos aproxima su entropía a su máximo valor, o lo que es igual, asemeja las probabilidades de ambos símbolos.
+
+\subsection{\textbf{Fuente \textit{S}$_1$}}
+
+\subsection*{\textbf{ComercioLibre}}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c | c }
+	  \textit{H(S$_1$)} & \textit{Max H(S$_1$)} & \textbar \textit{distinguidos}\textbar & \textbar Nodos\textbar \\
+	  \hline
+	  3.60 & 6 & 2 & 67 \\
+	\end{tabular}
+\end{center}
+Donde los símbolos \textit{distinguidos} son \{10.10.35.10, 10.10.34.241\}.
+
+\begin{figure}[htb]
+	\centering
+	% Por si tenemos problemas y necesitamos achicarlo esto sirve sin romper IEEE
+	%\resizebox{2cm}{!}{\input{img/ECommerce-graph-S1.tikz}}
+	\input{img/ECommerce-graph-S1.tikz}
+\end{figure}
+
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/ECommerce-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para ComercioLibre}
+    \label{informacion_ecommerce}
+  \end{center}
+\end{figure}
+
+\subsection*{\textbf{CoinFactory}}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c | c }
+	  \textit{H(S$_1$)} & \textit{Max H(S$_1$)} & \textbar \textit{distinguidos}\textbar & \textbar Nodos\textbar \\
+	  \hline
+	  1.90 & 3.91 & 1 & 15 \\
+	\end{tabular}
+\end{center}
+Donde el símbolo \textit{distinguido} es \{192.168.0.129\}.
+
+\begin{figure}[htb]
+	\centering
+	% Por si tenemos problemas y necesitamos achicarlo esto sirve sin romper IEEE
+	%\resizebox{2cm}{!}{\input{img/Pyme-graph-S1.tikz}}
+	\input{img/Pyme-graph-S1.tikz}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/Pyme-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para CoinFactory}
+    \label{informacion_pyme}
+  \end{center}
+\end{figure}
+
+\subsection*{\textbf{Café}}
+
+% \begin{center}\small
+% 	\begin{tabular}{ c | c | c | c }
+% 	  \textit{H(S$_1$)} & \textit{Max H(S$_1$)} & \textbar \textit{distinguidos}\textbar & \textbar Nodos\textbar \\
+% 	  \hline
+% 	  \textit{H(S$_1$)} & \textit{Max H(S$_1$)} & \textbar \textit{distinguidos}\textbar & \textbar Nodos\textbar \\
+% 	\end{tabular}
+% \end{center}
+
+% Donde los símbolos \textit{distinguidos} son \{ NUNCA LO SABREMOS \}.
+
+\begin{figure}[htb]
+	\centering
+	% Por si tenemos problemas y necesitamos achicarlo esto sirve sin romper IEEE
+	%\resizebox{2cm}{!}{\input{img/Cafe-graph-S1.tikz}}
+	\input{img/Cafe-graph-S1.tikz}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/Cafe-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para Cafe}
+    \label{informacion_cafe}
+  \end{center}
+\end{figure}
+
+\subsection*{\textbf{Cumpleaños}}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c | c }
+	  \textit{H(S$_1$)} & \textit{Max H(S$_1$)} & \textbar \textit{distinguidos}\textbar & \textbar Nodos\textbar \\
+	  \hline
+	  7.93 & 7.98 & 177 & 253 \\
+	\end{tabular}
+\end{center}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/Cumple-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para Cumpleaños}
+    \label{informacion_cumple}
+  \end{center}
+\end{figure}
+
+Esta red presentó pocas \textit{MACs} pero muchas direcciones \textit{IP}.
+% Se desconoce la infraestructura de la red como para poder desarrollar conclusiones al respecto de este evento.
+Una posible explicación de esta situación podría ser que algún nodo presentó un comportamiento anómalo. Por ejemplo, supongamos que un host envió muchos paquetes a ciertas \textit{IPs} que no estaban en la red, se generaron paquetes \textit{ARP} \textit{who-has} con destino hacia esas \textit{IPs}, entonces como no hubo respuestas esas \textit{IPs} no se agregaron a la tabla, por lo tanto cada vez que el probable nodo anómalo mandaba un paquete hacia algún host que no estaba en la red se generaba un nuevo paquete \textit{ARP}. Por lo tanto si las \textit{IPs} destinos de esos paquetes \textit{ARP} aparecieron muchas veces, su probabilidad sube, su información baja, lo que podría explicar la gran cantidad de nodos distinguidos.

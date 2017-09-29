@@ -1,0 +1,25 @@
+Café:
+- Distinguido buenas chances de ser DG
+- Nodo flashero que pregunta por sí mismo
+    --> https://serverfault.com/questions/219837/why-my-laptop-sends-arp-request-to-itself
+- Sabemos de la red que tiene cámaras IP (tiene sentido que sea en la misma red además porque se supone que eso influyó en cómo le andaba internet a la gente)
+
+CoinFactory:
+- Hay dos DGs bastante claros.
+- No coincide el distinguido con ninguno de esos.
+- El distinguido es una "anomalía", puede ser
+    --> un nodo que provee algún servicio
+    --> lo de forever
+    --> que el router lo está floodeando con who-has porque no responde
+- Sabemos de la red que es una empresa y puede tener cosas como repetidores, VPNs, impresoras, protocolos de seguridad, DNS?
+
+ComercioLibre
+- Uno sospechado DG que no salió distinguido.
+- 169.254.255.255 es una dirección reservada (ver bien en Wikipedia para qué era como para mencionarlo y justificar que esté ahí colgada)
+- 0.0.0.0
+    --> https://ask.wireshark.org/questions/5178/why-gratuitous-arps-for-0000
+    --> https://networkengineering.stackexchange.com/questions/16684/gratuitous-arp-request-same-destination-and-source-ip-addresses-uses-of-garp
+- Sabemos de la red que es una empresa y puede tener cosas como repetidores, VPNs, impresoras, protocolos de seguridad, DNS?
+
+Cumpleaños
+- Todo lo que hablamos, principalmente el tema del barrido y cómo eso hizo que haya banda de distinguidos

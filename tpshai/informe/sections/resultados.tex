@@ -1,0 +1,226 @@
+\section{Resultados y análisis}
+
+Se exponen y discuten los resultados obtenidos en cada experimento. Para cada uno se divide en la presentación y discusión de los resultados para la fuente $S$ seguido de la fuente $S_1$.
+
+\begin{itemize}
+	\item[$\mathbf{S}$:\space] Se compara en una tabla la información de cada símbolo con la entropía medida de la fuente. Se recuerda que la entropía máxima teórica para $S$ siempre es 1.
+	\item[$\mathbf{S_1}$:] Se muestra en una tabla la cantidad de nodos total por un lado y distinguidos por otro que detectó la fuente, y un gráfico de barras exhibiendo la información de cada nodo detectado en comparación con la entropía medida de la fuente. Se exhibe también un grafo que muestra el tráfico de paquetes \textit{ARP who-has} y señaliza en rojo los vértices que corresponden a símbolos distinguidos de nuestra fuente. 
+\end{itemize}
+
+\medskip
+
+Los grafos de tráfico ARP muestran mediante un eje dirigido $(u,v)$ el envío de un paquete \textit{who-has} desde una IP $u$ preguntando por la dirección física de un host con IP $v$. Si bien los símbolos de nuestra $S_1$ serían sólo los vértices $v$, es decir, las IPs de destino de paquetes \textit{who-has}, en el grafo se incluyen los de origen también para lograr justamente mostrar la red subyacente de paquetes ARP.
+
+Al respecto, notemos que si se encuentran vértices en el grafo que no tienen ejes entrantes, tiene sentido concluir que son nodos existentes en la red (ya que enviaron un paquete en el mismo \textit{dominio de broadcast}) y por ende son falsos negativos de $S_1$. Esta discrepancia está materializada en la diferencia entre la cantidad de nodos detectada por $S_1$ que se muestra en la tabla y la cantidad de vértices que se lee en los grafos.
+
+Por último, en los grafos se agrupan vértices para mejorar la visualización. Para formar estos grupos se tiene en consideración que los vértices tengan ejes salientes y/o entrantes a vértices en común, es decir, que presenten un \textit{comportamiento similar}. Por ejemplo, los dos vértices agrupados en la figura \ref{grafo_cafe} reciben cada uno un paquete \textit{who-has} con IP origen 192.168.1.1 a quien también envían ambos paquetes ARP.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{Café}}
+
+\subsubsection{Fuente $S$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c }
+	  $I(\SimbBroadcast)$ & $I(\SimbUnicast)$ & $H(S)$ \\
+	  \hline
+	  7.437 & 0.00868 & 0.051 \\
+	\end{tabular}
+\end{center}
+
+En este caso la entropía de la fuente es aproximadamente 20 veces más chica que la máxima, lo cual indica una mayor proporción de uno de los símbolos. Esto se debe a que el porcentaje de paquetes \textit{unicast} capturados es considerablemente más elevado. Podemos intiuir que en este caso los paquetes \textit{broadcast} originados por protocolos de control (como por ejemplo los \textit{who-has}) significaron un \textit{overhead} limitado en la comunicación.
+
+\medskip
+
+\subsubsection{Fuente $S_1$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c }
+	  $|nodos|$ & $|distinguidos|$ \\
+	  \hline
+	  8 & 2 \\
+	\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+	\centering
+	\caption{Café}
+	\input{img/Cafe-graph-S1.tikz}
+	\label{grafo_cafe}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/Cafe-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para Cafe}
+    \label{informacion_cafe}
+  \end{center}
+\end{figure}
+
+La cantidad de nodos identificados en total es razonable para un café, pero en base a nuestro conocimiento de la red tiene sentido sospechar que existían nodos que no fueron divisados, considerando la cantidad de personas y empleados que se encontraban en el lugar en el momento. El número de vértices del grafo, que muestra 5 nodos más que no aparecieron como símbolos de la fuente, se acerca más a un valor esperable.
+
+El método utilizado para definir símbolos distinguidos señaló dos vértices en la figura \ref{grafo_cafe}. De ellos uno, el 192.168.1.1, respeta la convención de direcciones utilizada para \textit{routers} o \textit{default gateways}. El grafo construido refleja que su vértice en el mismo puede asociarse a un router en base a su patrón de relaciones topológicamente central en la red de tráfico ARP. Esto se corresponde con el conocimiento acerca de la red de que efectivamente existe de un router con salida a internet.
+
+Por otro lado, el segundo símbolo señalado corresponde a un vértice con un comportamiento anómalo a priori. Entre sus posibles justificaciones se encuentra una estrategia estándar discutida en el RFC 5227 \footnote{IPv4 Address Conflict Detection https://tools.ietf.org/html/rfc5227} para prevenir conflictos de IP. También es utilizado para permitir a otros vértices como el \textit{router} actualizar sus tablas ARP para luego comunicarse con él.
+
+En conclusión, en lo que respecta la distinción de un default gateway, podemos ver que fue parcialmente exitoso al identificar al router pero dar un falso positivo que es el 192.168.1.200. Notamos de todas maneras a favor del criterio de distinción que el que efectivamente se trata del router tiene la menor información entre los dos según la figura \ref{informacion_cafe}.
+
+Se tiene conocimiento de la presencia de cámaras IPs conectadas a la red, las cuales en este caso puede corresponder a los dos vértices agrupados que intercambian un gran número de paquetes con el aparte \textit{router}.
+
+Es interesante notar que para esta red de haber utilizado el origen en lugar del destino de los paquetes para símbolos hubiera incluido estos dos entre sus resultados.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{CoinFactory}}
+
+\subsubsection{Fuente $S$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c }
+	  $I(\SimbBroadcast)$ & $I(\SimbUnicast)$ & $H(S)$ \\
+	  \hline
+	  4.54 & 0.06 & 0.0256 \\
+	\end{tabular}
+\end{center}
+
+La entropía de la fuente es 50 veces más chica que la máxima.
+Al igual que el caso anterior la cantidad de paquetes \textit{broadcast} representa un porcentaje chico del total, de lo se puede intuir de manera similar al experimento anterior que los protocolos de control de la red generaron un \textit{overhead} poco significativo.
+
+\medskip
+
+\subsubsection{Fuente $S_1$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c }
+	  $|nodos|$ & $|distinguidos|$ \\
+	  \hline
+	  15 & 1 \\
+	\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+	\centering
+	\caption{CoinFactory}
+	\input{img/Pyme-graph-S1.tikz}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/Pyme-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para CoinFactory}
+    \label{informacion_pyme}
+  \end{center}
+\end{figure}
+
+El grafo generado a través de los paquetes capturados refleja dos vértices, de IPs 192.168.0.1 y 192.168.0.2, con un comportamiento que se presume propio de un \textit{router} o un \textit{default gateway} al tener direcciones físicas muy solicitadas por muchos nodos distintos. Esto se corresponde en parte con el conocimiento acerca de la red según el cual existe al menos un router con salida a internet. En este caso, el método de detección de nodos distinguidos no los marcó como tales, y en su lugar señaló un vértice, el 192.168.0.129, que recibió una cantidad de pedidos \textit{who-has} anómala respecto a los demás. Nuevamente dio un falso positivo, pero además tampoco distinguió al que sospechamos que es el router. Sin embargo, notamos que los siguientes dos nodos con menor información son los nodos .1 y .2 según el gráfico en la figura \ref{informacion_pyme}, de modo que en este caso también observamos una correlación entre el rol de \textit{default gateway} y el proveer poca información en el modelo de fuente $S_1$.
+
+Se puede ver en el grafo que los pedidos fueron generados en su enteridad por un solo nodo, específicamente uno de los que sospechamos que es un router, por lo que el comportamiento aparentemente anómalo estaría asociado a él. Sabemos que, según el RFC citado del protocolo, cualquier nodo en la red que tenga en su tabla ARP una entrada para el .1 la actualizará al ver cada uno de los pedidos. Suponiendo la preexistencia de dichas entradas en las tablas de los hosts de la red (generada en una instancia previa a la captura), si bien genera una cantidad relativamente alta de broadcasts que cargan al medio físico y a todos los hosts de la red, este tipo de política puede reducir la necesidad del resto de los hosts de consultar por la dirección física del sospechado router, centralizando en él la responsabilidad de ``informar'' su dirección. Se sabe que la red corresponde a una empresa, por lo que se espera la presencia de servicios como impresoras red, servidores web, servidores DNS etc. Entre los argumentos que pueden justificar este comportamiento también se encuentra la posibilidad de que el nodo receptor de estos pedidos sea host de un servicio de ese tipo. Otra posibilidad es la existencia de configuraciones que requieran la resolución periódica de la dirección física de esa IP de manera \textit{ad-hoc}. Un caso de esto puede ocurrir al tener un dispositivo vinculado con una IP en la lista de clientes DHCP del \textit{router}, con un \textit{lease time} arbitrariamente grande que se apagó.
+
+Otro comportamiento particular observado es el del nodo .167, que envía seis \textit{gratuitous ARP requests}. Al igual que en el experimento anterior, esto puede asociarse con la aplicación de un protocolo de detección de conflictos de direcciones IP.
+
+En este caso, de haber utilizado el origen en lugar de los destinos de los \textit{who-has}, el método de obtención de símbolos distinguidos probablemente hubiera marcado al vértice con IPs \texttt{192.168.0.1} como tal. Además, hubiera detectado como hosts a 9 de los que se encuentran entre los nodos agrupados del grafo y que resultaron como falsos negativos, ya que en el grafo se observan 24 nodos y $S_1$ arrojó 15 símbolos distintos durante la captura.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{ComercioLibre}}
+
+\subsubsection{Fuente $S$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c }
+	  $I(\SimbBroadcast)$ & $I(\SimbUnicast)$ & $H(S)$ \\
+	  \hline
+	  5.13 & 0.04 & 0.187 \\
+	\end{tabular}
+\end{center}
+
+Al igual que antes se puede observar que la entropía no es máxima. En este caso el tráfico de los paquetes \textit{unicast} representa el 97\% del total, lo cual induciría una conclusión similar a la de los experimentos anteriores respecto del \textit{overhead} producido por mensajes \textit{broadcast} de control.
+
+\medskip
+
+\subsubsection{Fuente $S_1$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c }
+	  $|nodos|$ & $|distinguidos|$ \\
+	  \hline
+	 15 & 2 \\
+	\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+	\centering
+	\caption{ComercioLibre}
+	\input{img/ECommerce-graph-S1.tikz}
+    \label{grafo_ecommerce}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/ECommerce-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para ComercioLibre}
+    \label{informacion_ecommerce}
+  \end{center}
+\end{figure}
+
+La fuente $S_1$ para este experimento emitió un total de 15 símbolos distintos. Dos de estos, 10.10.35.10 y 10.10.35.241 fueron señalados como distinguidos. Con un análisis análogo a la de los experimentos anteriores, conociendo que en este caso también se trata de una red con salida a internet, podemos sospechar que el 10.10.35.1 es en realidad el router, y que los marcados distinguidos no lo son, obteniendo en este experimento dos falsos positivos por parte del criterio de distinción. Se desconoce a qué dispositivos correspondían, pero dado que se trata de una red empresarial, podríamos atribuir lo altamente solicitadas que parecen ser sus direcciones físicas a que sean hosts de servicios como repetidores, impresoras o servidores. De modo similar a los experimentos anteriores, nos encontramos con que el sospechado router es el siguiente con menor información luego del host de IP 169.254.255.255 que, como veremos a continuación, no representa un verdadero host en la red.
+
+Se da una situación parecida a la mencionada en el experimento anterior, en la que el candidato a ser router pregunta una cantidad relativamente alta de veces por la dirección física del .24. Esto refuerza la noción de que podría corresponder a un nodo con algún servicio especial.
+
+En la figura \ref{grafo_ecommerce} se pueden observar dos IPs que no pertenecen a lo que parece ser una subred de direcciones 10.10.35.X. Por un lado, la \texttt{0.0.0.0}, no pertenece al conjunto de símbolos emitidos por la fuente ya que no fue receptor de ningún paquete \textit{who-has}. En principio, esto podría clasificarse como un falso negativo, es decir, un host que nuestro modelo de la red como fuente se perdió por tomar sólo las direcciones de destino. Sin embargo, esto no tendría sentido por el claro hecho de que la dirección ni siquiera tiene sentido como perteneciente a la red. Observando que la misma generó 3 ARP \textit{request} con IP destino 10.10.35.10, podemos hacer alusión al citado RFC 5227 \footnote{sección: 2.1.1. Probe Details} donde se explica que este comportamiento es generado para evitar un conflicto de IPs. El host en cuestión envía tres pedidos \textit{who-has} con la IP que quiere comenzar a usar como destino completando el campo de \textit{origen} con la IP \texttt{0.0.0.0}, que es una dirección reservada para usos como este según el RFC 5735\footnote{https://tools.ietf.org/html/rfc5735}, para no alterar las tablas ARP de otros \textit{hosts} en caso que ya se este utilizando la IP. Si no recibe respuesta se asigna esa IP y la anuncia. Los dos envíos de \textit{who-has} por parte del .223 a sí mismo pueden ser asociados al RFC 5227 también.
+
+Por otro lado, la IP \texttt{169.254.255.255} fue un símbolo emitido por $S_1$ y se trata de una dirección reservada según el RFC 5735 para uso local, comúnmente relacionado al protocolo DHCP.
+
+Notemos además la discrepancia entre la cantidad de nodos detectada por la fuente de 15 con la que existe en el grafo de 17 si se ignoran las IPs especiales mencionadas antes.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textbf{Cumpleaños}}
+
+\begin{center}\small
+	\begin{tabular}{ c | c | c }
+	  $I(\SimbBroadcast)$ & $I(\SimbUnicast)$ & $H(S)$ \\
+	  \hline
+	  0.53 & 1.68 & 0.894 \\
+	\end{tabular}
+\end{center}
+
+La red analizada para este experimento presentó un comportamiento distinto a las anteriores. La entropía se acercó mucho más al máximo, y el en este caso fueron más los paquetes \textit{broadcast} que los \textit{unicast}, alcanzando un 68\% del total. Esto sugiere un comportamiento anómalo ya que la proporción de envíos \textit{broadcast} sí parece suponer un \textit{overhead} muy alto en la red, mientras que lo esperable es que la mayoría del tráfico en una red hogareña con conexión a internet sea con paquetes \textit{unicast} utilizados para transmitir datos, tal como sucedió en las redes anteriores.
+
+\subsubsection{Fuente $S_1$}
+
+\begin{center}\small
+	\begin{tabular}{ c | c }
+	  $|nodos|$ & $|distinguidos|$ \\
+	  \hline
+	  253 & 177 \\
+	\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+	\centering
+	\caption{Cumpleaños}
+	\input{img/Cumple-graph-S1.tikz}
+    \label{grafo_cumple}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale = 0.5]{img/Cumple-information-S1.pdf}
+    \caption{Información de los simbolos de la fuente S1 para Cumpleaños}
+    \label{informacion_cumple}
+  \end{center}
+\end{figure}
+
+El tráfico ARP resultó muy alto. Se capturaron en total 2545 mensajes ARP sobre un total de 3812 capturados. La fuente $S_1$ generó en total 253 símbolos y más de dos tercios de esos fueron distinguidos, lo que indica que hubo pocos símbolos con mucha información. Se sabe que al momento de la captura se encontraban aproximadamente 20 potenciales usuarios presentes en el ámbito físico, con lo cual el número detectado de hosts está lejos de poder ser real. Naturalmente, tampoco tiene sentido pensar en un dominio de broadcast con 177 routers. Sabiendo que al menos uno existía al saber que se trató de una red hogareña con un router con salida a internet, que se considera que debe de ser el 192.168.0.1, ya podemos concluir que el criterio de distinción no sirvió en este caso para identificar al \textit{default gateway}.
+
+En la figura \ref{informacion_cumple} están representados los 15 símbolos con más y menos información. La línea punteada refleja la presencia de un intervalo de símbolos no representados para una mejor visualización. En el grafo \ref{grafo_cumple} se puede observar de forma más clara la presencia de los nodos omitidos del gráfico.
+
+El que suponemos \textit{default gateway} envió 2007 paquetes ARP con destino a 177 \textit{host} distintos, dando como alrededor de 11 paquetes por cada IP de esa nube del grafo. También envió otros 515 paquetes a otro grupo de IPs, promediando los 7 paquetes por dirección. La nubes que se ven fueron agrupadas de acuerdo a estos valores. Hay evidencia suficiente para decir que un \textit{host} realizó un comportamiento de barrido sobre casi todo el rango de direcciones IP pertenecientes a la red \texttt{192.168.1.0/24} enviando paquetes ARP \textit{request} con la IP del \textit{default gateway} como dirección origen a cada una varias veces. Una posible explicación para este comportamiento es que algún \textit{host}, que a priori parece ser el router en este caso, está realizando consultas ARP periódicas para detectar que direcciones IP están en uso en la red.
+
+Notemos por último que, al igual a lo sucedido con en casos anteriores, haber utilizado la dirección origen de los mensajes \textit{who-has} en lugar del destino seguramente hubiera señalado este símbolo.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+% \section{\textbf{Figuras}}

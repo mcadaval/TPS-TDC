@@ -1,0 +1,9 @@
+digraph G {
+    dpi="1000";
+    size="1,1";
+    "40:55:39:1a:0f:3d" -> "ac:bc:32:cc:72:db" [ label="16042" ];
+    "ac:bc:32:cc:72:db" -> "01:00:5e:7f:ff:fa" [ label="20" ];
+    "ac:bc:32:cc:72:db" -> "ff:ff:ff:ff:ff:ff" [ label="20" ];
+    "ac:bc:32:cc:72:db" -> "00:00:0c:9f:f2:6a" [ label="9982" ];
+    "00:00:0c:9f:f2:6a" -> "ac:bc:32:cc:72:db" [ label="20" ];
+}

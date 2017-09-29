@@ -1,0 +1,67 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{blindtext}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage[section]{placeins}
+\usepackage{float}
+\usetikzlibrary{shapes}
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+\newcommand{\SimbBroadcast}{S_{B}}
+\newcommand{\SimbUnicast}{S_{U}}
+\newcommand{\peterson}{Computer Networks: A Systems Approach. 5ta Edición. Peterson, Davie}
+\newcommand{\rfcDeArp}{RFC 826 (ARP) http://tools.ietf.org/html/rfc826}
+
+\begin{document}
+
+\title{Wiretapping \\ {\large Trabajo pr\'actico I, Teor\'ia de las Comunicaciones}}
+
+\author{Brian Bohe, Lucas Rodriguez, Shai Bianchi, Vera Bogdanich}
+
+\author{Shai Bianchi \IEEEmembership{540/12},
+        Vera Bogdanich Espina \IEEEmembership{601/14},
+        Brian Bohe \IEEEmembership{706/14},
+        Lucas Rodriguez \IEEEmembership{593/14}}
+
+\maketitle
+\iffalse
+\begin{abstract}
+\blindtext[1]
+\end{abstract}
+
+  \begin{IEEEkeywords}
+    Scapy, Sniff, Fuentes de información.
+  \end{IEEEkeywords}
+\fi
+
+\IEEEpeerreviewmaketitle
+
+%Introduccion
+\input{sections/intro} %219 palabras
+
+%Experimentos
+\input{sections/exp}
+
+%Resultados
+\input{sections/resultados}
+
+%Conclusiones
+\input{sections/conclusion}
+
+\appendices
+
+
+\iffalse
+%%Dejo esto por si queremos hacer referencias a documentación de Scapy
+\begin{thebibliography}{1}
+\bibitem{IEEEhowto:kopka}
+H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+\end{thebibliography}
+\fi
+
+\end{document}
