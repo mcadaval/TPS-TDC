@@ -1,0 +1,1 @@
+BROADCAST_ADDRESS = 'ff:ff:ff:ff:ff:ff'
