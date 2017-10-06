@@ -5,13 +5,13 @@ class Source:
     def __init__(self, symbols):
         self.symbols_capture = symbols
         self.symbols = None        
-        self.symbols = self.get_symbols()
         self.symbols_occurrences = None
         self.symbols_probabilities = None
         self.symbols_info = None
         self.average_info = None
         self.entropy = None
 
+        self.get_symbols()
         self.get_symbols_ocurrences()
         self.get_symbols_probabilites()
         self.get_entropy()
