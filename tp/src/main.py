@@ -6,18 +6,17 @@ import sys
 
 
 def process(rute):
-    packets = rdpcap('../' + rute)
-    symbols = Parser.parse(packets)
-    source = Source(symbols)
+    packets = rdpcap(rute)
+    symbols_capture = Parser.parse(packets)
+    source = Source(symbols_capture)
 
-    print('Cantidad total de paquetes: ', source.get_amount_of_symbols())
-    print('Entriopia: ', source.get_entropy())
-    print('Entriopia Maxima: ', source.get_max_entropy())
+    print('Cantidad total de paquetes: ', len(symbols_capture))
+    print('Entropia: ', source.get_entropy())
+    print('Entropia Maxima: ', source.get_max_entropy())
     print(source)
 
     for s in source.get_hosts():
         print(s)
-
 
 
 if __name__ == '__main__':
