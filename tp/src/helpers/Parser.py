@@ -8,3 +8,12 @@ def parse(packets):
         symbols.append(packet.symbol())
 
     return symbols
+
+
+
+def parseSrc(packets):
+    symbols = []
+    for pkt in packets:
+        if 'ARP' in pkt:
+            symbols.append(pkt['ARP'].pdst)
+    return symbols

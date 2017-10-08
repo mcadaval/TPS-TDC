@@ -70,7 +70,7 @@ class Source:
 
     def get_hosts(self):
         tuples = [(symbol, info) for symbol, info in self.get_symbols_info().items()]
-        tuples = list(filter(lambda element: element[1] < (self.average_info * 0.8), tuples))
+        tuples = list(filter(lambda element: element[1] < self.average_info, tuples))
         return tuples
 
     def get_symbols_info(self):

@@ -8,14 +8,17 @@ import sys
 def process(rute):
     packets = rdpcap(rute)
     symbols_capture = Parser.parse(packets)
-    source = Source(symbols_capture)
+    source_protocols = Source(symbols_capture)
+
+    source_hosts = Source(Parser.parseSrc(packets))
+
 
     print('Cantidad total de paquetes: ', len(symbols_capture))
-    print('Entropia: ', source.get_entropy())
-    print('Entropia Maxima: ', source.get_max_entropy())
-    print(source)
+    print('Entropia: ', source_protocols.get_entropy())
+    print('Entropia Maxima: ', source_protocols.get_max_entropy())
+    print(source_protocols)
 
-    for s in source.get_hosts():
+    for s in source_hosts.get_hosts():
         print(s)
 
 
