@@ -2,6 +2,7 @@ from __future__ import print_function
 from scapy.all import *
 from model.Source import Source
 from helpers import Parser
+from helpers import GraphHelper
 import sys
 
 
@@ -21,6 +22,11 @@ def process(rute):
     for s in source_hosts.get_hosts():
         print(s)
 
+    hostsGraph = GraphHelper.createGraph(packets)
+    simplerHostsGraph = GraphHelper.unionSimilarNodes(hostsGraph)
+    #GraphHelper.drawGraph(hostsGraph, False, False)
+    GraphHelper.drawGraph(simplerHostsGraph, True)
+
 
 if __name__ == '__main__':
     print('Usage: python3 main.py <rute to pcap>')
@@ -32,3 +38,4 @@ if __name__ == '__main__':
         if rute == 'q':
             exit(0)
         process(rute)
+    
