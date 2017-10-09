@@ -94,22 +94,22 @@ class Source:
 
     def calculate_broadcast_percentage(self):
         amount_broadcast = 0
-        for pkt in self.symbols:
+        for pkt in self.symbols_capture:
             if pkt[0] == "BROADCAST":
                 amount_broadcast = amount_broadcast + 1
-        return amount_broadcast/len(self.symbols)*100
+        return amount_broadcast/len(self.symbols_capture)*100
 
     def calculate_protocols_probabilites(self):
         protocols_percentage = {}
 
-        for symbol in self.symbols:
+        for symbol in self.symbols_capture:
             if symbol[1] in protocols_percentage:
                 protocols_percentage[symbol[1]] += 1
             else:
                 protocols_percentage[symbol[1]] = 1
 
         for protocol in protocols_percentage:
-            protocols_percentage[protocol] = protocols_percentage[protocol]/len(self.symbols)
+            protocols_percentage[protocol] = protocols_percentage[protocol]/len(self.symbols_capture)
 
         return protocols_percentage
 
