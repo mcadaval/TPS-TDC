@@ -64,3 +64,21 @@ def unionSimilarNodes(graph):
             networkGraph.add_edge(node, index, weight=sameNodes)
             index = index + 1
     return networkGraph
+
+
+
+def barChar(labels_map, showLegend, threshold = 0):
+    fig, ax = plt.subplots()
+    index = 0
+    for label, value in labels_map.items():
+        print(label, value)
+        ax.bar(index*2, value, label=label)
+        index = index+1
+    
+    if threshold > 0:
+        ax.plot([0., 35], [threshold, threshold], "k--")
+
+    if showLegend:
+        plt.legend()
+    plt.show()
+    

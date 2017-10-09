@@ -5,6 +5,10 @@ from helpers import Parser
 from helpers import GraphHelper
 import sys
 
+BAR_CHART_PROTOCOLS = False
+BAR_CHART_HOSTS = False
+HOST_GRAPH = False
+SIMPLE_HOST_GRAPH = False
 
 def process(rute):
     packets = rdpcap(rute)
@@ -28,10 +32,21 @@ def process(rute):
 
     print('Probabilidades de protocolos', source_protocols.calculate_protocols_probabilites())
 
-    hostsGraph = GraphHelper.createGraph(packets)
-    simplerHostsGraph = GraphHelper.unionSimilarNodes(hostsGraph)
-    #GraphHelper.drawGraph(hostsGraph, False, False)
-    GraphHelper.drawGraph(simplerHostsGraph, True)
+    if BAR_CHART_PROTOCOLS:
+        GraphHelper.barChar(source_protocols.calculate_protocols_probabilites(), True)
+
+    if BAR_CHART_HOSTS:
+        host_info, threshold = source_hosts.get_hosts_info()
+        GraphHelper.barChar(host_info, False, threshold)
+
+    if HOST_GRAPH:
+        hostsGraph = GraphHelper.createGraph(packets)
+        GraphHelper.drawGraph(hostsGraph, False, False)
+
+    if SIMPLE_HOST_GRAPH:
+        hostsGraph = GraphHelper.createGraph(packets)
+        simplerHostsGraph = GraphHelper.unionSimilarNodes(hostsGraph)    
+        GraphHelper.drawGraph(simplerHostsGraph, True)
 
 
 if __name__ == '__main__':

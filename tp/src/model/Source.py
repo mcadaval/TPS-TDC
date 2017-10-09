@@ -74,6 +74,11 @@ class Source:
         tuples = list(filter(lambda element: element[1] < (self.average_info * 0.8), tuples))
         return tuples
 
+    def get_hosts_info(self):
+        tuples = self.get_hosts()
+        host_map = dict(tuples)
+        return host_map, self.average_info
+
     def get_symbols_info(self):
         if not self.symbols_info:
             symbols_info = {}
