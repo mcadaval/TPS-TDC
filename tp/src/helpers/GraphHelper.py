@@ -31,8 +31,9 @@ def drawGraph(graph, withNodeLabels):
     plt.show()
     '''
 
-    pos = nx.spring_layout(graph, k=0.3,iterations=20)
-    nodesBySize = getNodesBySize(graph)
+    pos = nx.spring_layout(graph, k=0.3,iterations=10)
+    #pos = nx.shell_layout(graph)
+    #pos = nx.random_layout(graph)
     for n in graph.nodes():
         l = []
         l.append(n)
@@ -40,7 +41,7 @@ def drawGraph(graph, withNodeLabels):
         nodeColor = 'g'
         labels = {}
         labels[n] = nodeSize
-        nx.draw_networkx(graph, pos, nodelist=l, labels= labels, node_size = 400+nodeSize*150, node_color=nodeColor ,node_shape = '.', with_labels = withNodeLabels)
+        nx.draw_networkx(graph, pos, nodelist=l, labels= labels, node_size = 400+nodeSize*150, node_color=nodeColor ,node_shape = '.', with_labels = withNodeLabels, width=0.5)
     plt.axis('off')
     plt.show()
     
@@ -63,11 +64,3 @@ def unionSimilarNodes(graph):
             networkGraph.add_edge(node, index, weight=sameNodes)
             index = index + 1
     return networkGraph
-
-def getNodesBySize(graph):
-    res = []
-    res.append(graph.nodes())
-    for n in graph.nodes():
-        print(graph.node[n]['size'])
-        print(graph.node[n]['size'])
-    return res

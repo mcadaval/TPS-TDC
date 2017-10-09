@@ -24,6 +24,9 @@ class Package:
     def destination_type(self):
         return self.destination_type
 
+    def is_broadcast(self):
+        return self.destination_type == "BROADCAST"
+
     def symbol(self):
         return self.destination_type, self.protocol
 

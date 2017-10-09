@@ -70,7 +70,8 @@ class Source:
 
     def get_hosts(self):
         tuples = [(symbol, info) for symbol, info in self.get_symbols_info().items()]
-        tuples = list(filter(lambda element: element[1] < self.average_info, tuples))
+        print('average_info: '+str(self.average_info))
+        tuples = list(filter(lambda element: element[1] < (self.average_info * 0.8), tuples))
         return tuples
 
     def get_symbols_info(self):
@@ -86,11 +87,32 @@ class Source:
 
         return self.symbols_info
 
+    def calculate_broadcast_percentage(self):
+        amount_broadcast = 0
+        for pkt in self.symbols:
+            if pkt[0] == "BROADCAST":
+                amount_broadcast = amount_broadcast + 1
+        return amount_broadcast/len(self.symbols)*100
+
+    def calculate_protocols_probabilites(self):
+        protocols_percentage = {}
+
+        for symbol in self.symbols:
+            if symbol[1] in protocols_percentage:
+                protocols_percentage[symbol[1]] += 1
+            else:
+                protocols_percentage[symbol[1]] = 1
+
+        for protocol in protocols_percentage:
+            protocols_percentage[protocol] = protocols_percentage[protocol]/len(self.symbols)
+
+        return protocols_percentage
+
     def __str__(self):
         res = ''
         for symb, occurrences in self.symbols_occurrences.items():
-            res += 'symbol: ' + str(symb) + ' occurrences: ' + str(occurrences) + ' probability: ' + str(
+            res += 'symb: ' + str(symb) + ' count: ' + str(occurrences) + ' prob: ' + str(
                 self.symbols_probabilities[
-                    symb]) + '\n'
+                    symb])[0:7] + '\n'
 
         return res

@@ -19,8 +19,14 @@ def process(rute):
     print('Entropia Maxima: ', source_protocols.get_max_entropy())
     print(source_protocols)
 
+    print('Entropia hosts: ', source_hosts.get_entropy())
+    print('Hosts identificados: ')
     for s in source_hosts.get_hosts():
         print(s)
+
+    print('Porcentaje de paquetes broadcast', source_protocols.calculate_broadcast_percentage())
+
+    print('Probabilidades de protocolos', source_protocols.calculate_protocols_probabilites())
 
     hostsGraph = GraphHelper.createGraph(packets)
     simplerHostsGraph = GraphHelper.unionSimilarNodes(hostsGraph)
@@ -29,9 +35,11 @@ def process(rute):
 
 
 if __name__ == '__main__':
-    print('Usage: python3 main.py <rute to pcap>')
+    
     if len(sys.argv) > 1:
         process(sys.argv[1])
+    else:
+        print('Usage: python3 main.py <rute to pcap>')
 
     while True:
         rute = input("Ingrese la ruta del pcap, 'q' para salir: \n")
