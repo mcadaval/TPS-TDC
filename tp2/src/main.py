@@ -2,7 +2,7 @@ from models.Hop import Hop
 import sys
 
 hop = Hop({
-    'rtt': "rtt",git
+    'rtt': "rtt",
     'ip_address': "rtt",
     'intercontinental_jump': "rtt",
     'hop_numb': "rtt", })
