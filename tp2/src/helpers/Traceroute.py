@@ -22,6 +22,11 @@ class Traceroute:
             response = sr1(packet, timeout=2)
 
             if response != None:
+                if response[ICMP].type == 11:           # type 11 = 'time-exceeded'
+                    print('time-exceeded')
+                else:
+                    print('type: '+str(response[ICMP].type))        # type 0 = 'echo-reply'
+
                 start = datetime.fromtimestamp(packet.time)
                 end = datetime.fromtimestamp(response.time)
                 print("start "+str(start))
