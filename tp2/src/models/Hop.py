@@ -6,6 +6,7 @@ class Hop:
         self.ip_address = params['ip_address']
         self.intercontinental_jump = params['intercontinental_jump']
         self.hop_numb = params['hop_numb']
+        
 
     def get_rtt(self):
         return self.rtt
