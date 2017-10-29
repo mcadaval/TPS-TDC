@@ -29,3 +29,6 @@ class Hop:
 
     def to_json(self):
         return json.dumps(self.to_dicc())
+
+    def __str__(self):
+        return str(self.to_dicc())
