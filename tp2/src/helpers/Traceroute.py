@@ -22,10 +22,14 @@ class Traceroute:
             response = sr1(packet, timeout=2)
 
             if response != None:
-                start = datetime.fromtimestamp(response.sent_time)
+                start = datetime.fromtimestamp(packet.time)
                 end = datetime.fromtimestamp(response.time)
+                print("start "+str(start))
+                print("end "+str(end))
                 delta = end - start
-                sum_of_times += delta
+                response_time_ms = delta.total_seconds()*1000
+                
+                sum_of_times += response_time_ms
                 valid_responses += 1
 
             responses.append(response)
