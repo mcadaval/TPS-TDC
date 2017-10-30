@@ -33,7 +33,8 @@ class Traceroute:
                     print('time-exceeded')    
                 else:
                     print('type: '+str(response[ICMP].type))        # type 0 = 'echo-reply'
-                    send_success = True
+                    if response[ICMP].type == 0:
+                        send_success = True
 
                 if not response.src in hosts_ip:
                     hosts_ip.append(response.src)
