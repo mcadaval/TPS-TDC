@@ -2,6 +2,7 @@ from scapy.all import *
 from datetime import datetime
 import helpers.Logger as logger
 import models.Hop as hop
+import time
 
 
 
@@ -17,17 +18,20 @@ class Traceroute:
     def send_packet(self, times, ttl):
         print("ttl "+str(ttl))
         result = []
-        sum_of_times = 0
-        valid_responses = 0
         hosts_ip = []
-        average_time = 0
         send_success = False
 
+        minimum_time = 999999999
         for i in range(times):
 
             packet = self.create_packet(self.dest, ttl)
+            
+            start = datetime.fromtimestamp(time.time())
             response = sr1(packet, timeout=2, verbose=False)
-
+            end = datetime.fromtimestamp(time.time())
+            delta = end - start
+            #response_time_ms = delta.total_seconds()*1000
+            
             if response != None:
                 if response[ICMP].type == 11:           # type 11 = 'time-exceeded'
                     print('time-exceeded')    
@@ -39,22 +43,18 @@ class Traceroute:
                 if not response.src in hosts_ip:
                     hosts_ip.append(response.src)
 
-                start = datetime.fromtimestamp(packet.time)
-                end = datetime.fromtimestamp(response.time)
-                delta = end - start
+                #start = datetime.fromtimestamp(packet.time)
+                #end = datetime.fromtimestamp(response.time)
+                #delta = end - start
                 response_time_ms = delta.total_seconds()*1000
-                                    
-                sum_of_times += response_time_ms
-                valid_responses += 1
+                if minimum_time > response_time_ms:
+                    minimum_time = response_time_ms
+                    hosts_ip = [response.src]
 
-
-        if valid_responses != 0:
-            average_time = sum_of_times / valid_responses
-            print("average_time "+str(average_time))
 
         for ip in hosts_ip:
             response = {
-                'rtt': average_time,        # rtt entre origen y destino al momento de finizar el ttl
+                'rtt': minimum_time,        # rtt entre origen y destino al momento de finizar el ttl
                 'ip_address': ip,
                 'ttl': ttl
             }
@@ -67,7 +67,7 @@ class Traceroute:
         responses = []
         for ttl in range(self.life_span):
             #logger.print_iterarion(ttl)
-            response, send_success = self.send_packet(5, ttl)
+            response, send_success = self.send_packet(20, ttl)
             responses.append(response)
             if send_success:
                 break
