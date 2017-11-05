@@ -37,6 +37,8 @@ def cimbala(hops):
         rtt_mean = mean(hops)
         std_deviation = standar_deviation(hops, rtt_mean)
 
+        print("st", std_deviation)
+
         first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean) / std_deviation
         last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean) / std_deviation
 
@@ -85,4 +87,4 @@ def standar_deviation(list, mean):
     for hop in list:
         acum += pow((hop.rtt - mean), 2)
 
-    return math.sqrt((1 / len(list) * acum))
+    return math.sqrt((1 / (len(list)-1) * acum))
