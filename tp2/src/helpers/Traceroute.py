@@ -110,6 +110,7 @@ class Traceroute:
 
         for hop in hops:
             print(str(hop))
+        return hops
 
         
 
