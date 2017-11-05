@@ -23,7 +23,8 @@ def create_hops(list):
 
 def example():
     res = cimbala(create_hops(numbers))
-    print(res)
+    for hop in res:
+        print(hop)
 
 
 def cimbala(hops):
@@ -34,8 +35,18 @@ def cimbala(hops):
 
     while iterate:
         rtt_mean = mean(hops)
-        first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean, hops)
-        last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean, hops)
+        std_deviation = standar_deviation(hops, rtt_mean)
+
+        print("mean", rtt_mean)
+        print("st", std_deviation)
+
+        first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean, std_deviation)
+        last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean, std_deviation)
+
+        print("first")
+        print(first_element_z_rtt_value)
+        print("last")
+        print(last_element_z_rtt_value)
 
         hop = {}
 
@@ -59,14 +70,14 @@ def cimbala(hops):
 
 
 def is_outlier(hops, zrtt_value):
-    is_outlier = False
-    if zrtt_value > tau_table(len(hops) - 1):
-        is_outlier = True
-    return is_outlier
+    res = False
+    if zrtt_value > tau_table[(len(hops) - 1)]:
+        res = True
+    return res
 
 
-def z_rtt_value(hop, rtt_mean, hops):
-    return (hop.rtt - rtt_mean) / (standar_deviation(hops, rtt_mean))
+def z_rtt_value(hop, rtt_mean, std_deviation):
+    return (hop.rtt - rtt_mean) / std_deviation
 
 
 def mean(list):
@@ -75,10 +86,6 @@ def mean(list):
         sum_rtt += hop.rtt
 
     return sum_rtt / len(list)
-
-
-def tau_table(index):
-    tau_table[index]
 
 
 def standar_deviation(list, mean):
