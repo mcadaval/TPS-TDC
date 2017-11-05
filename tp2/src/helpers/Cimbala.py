@@ -31,16 +31,19 @@ def cimbala(hops):
     hops.sort(key=lambda hop: hop.rtt, reverse=True)
 
     intercontinental_hops = []
-    iterate = True
+    iterate = len(hops) > 1
 
     while iterate:
+
         rtt_mean = mean(hops)
         std_deviation = standar_deviation(hops, rtt_mean)
 
         print("st", std_deviation)
 
+        
         first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean) / std_deviation
         last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean) / std_deviation
+        
 
         hop = {}
 
@@ -57,6 +60,8 @@ def cimbala(hops):
             del hops[hop['hop_index']]
         else:
             iterate = False
+
+        iterate = iterate and len(hops) > 1
 
     hops = hops + intercontinental_hops
     hops.sort(key=lambda hop: hop.hop_numb, reverse=True)
@@ -86,5 +91,5 @@ def standar_deviation(list, mean):
     acum = 0
     for hop in list:
         acum += pow((hop.rtt - mean), 2)
-
+        
     return math.sqrt((1 / (len(list)-1) * acum))
