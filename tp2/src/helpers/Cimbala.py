@@ -37,16 +37,8 @@ def cimbala(hops):
         rtt_mean = mean(hops)
         std_deviation = standar_deviation(hops, rtt_mean)
 
-        print("mean", rtt_mean)
-        print("st", std_deviation)
-
-        first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean, std_deviation)
-        last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean, std_deviation)
-
-        print("first")
-        print(first_element_z_rtt_value)
-        print("last")
-        print(last_element_z_rtt_value)
+        first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean) / std_deviation
+        last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean) / std_deviation
 
         hop = {}
 
@@ -76,8 +68,8 @@ def is_outlier(hops, zrtt_value):
     return res
 
 
-def z_rtt_value(hop, rtt_mean, std_deviation):
-    return (hop.rtt - rtt_mean) / std_deviation
+def z_rtt_value(hop, rtt_mean):
+    return abs(hop.rtt - rtt_mean)
 
 
 def mean(list):
@@ -91,6 +83,6 @@ def mean(list):
 def standar_deviation(list, mean):
     acum = 0
     for hop in list:
-        acum = pow((hop.rtt - mean), 2)
+        acum += pow((hop.rtt - mean), 2)
 
     return math.sqrt((1 / len(list) * acum))
