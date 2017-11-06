@@ -64,7 +64,7 @@ def cimbala(hops):
         iterate = iterate and len(hops) > 1
 
     hops = hops + intercontinental_hops
-    hops.sort(key=lambda hop: hop.hop_numb, reverse=True)
+    hops.sort(key=lambda hop: hop.hop_numb, reverse=False)
     return hops
 
 

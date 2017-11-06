@@ -83,21 +83,16 @@ class Traceroute:
                 break
 
         # saco respuestas vacias
-        responses = [hop for hop in responses if hop['ip_address'] != None]
+        responses = [hop for hop in responses if hop['ip_address'] != None]        
 
         # saco duplicados
-        filtered_responses = []
+        filtered_responses = [responses[0]]
         for i in range(len(responses)):
             if i > 0:
                 hop = responses[i]
-                if hop['ip_address'] != responses[i-1]['ip_address']:
+                if hop['ip_address'] != filtered_responses[len(filtered_responses)-1]['ip_address']:
                     filtered_responses.append(responses[i])
-                    break
-            else:
-                filtered_responses.append(responses[i])
-                    
-
-        
+                            
         # seteo el rtt como el tiempo de un salto
         for i in reversed(range(len(filtered_responses))):
             if i > 0:
