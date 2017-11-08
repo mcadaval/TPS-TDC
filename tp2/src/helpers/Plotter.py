@@ -5,12 +5,34 @@ import gmplot
 example = [{'rtt': 1}, {'rtt': 2}]
 
 
-def rtt_graph(hops):
-    x = range(0, len(hops))
+def rtt_between_jumps_graph(hops):
+    x = [hop.hop_numb for hop in hops]
     y = [hop.rtt for hop in hops]
 
+    plt.title('Gráfico de RTT entre saltos')
+    plt.xlabel('Número de salto')
+    plt.xticks(range(0, hops[-1].hop_numb + 1))
+    plt.ylabel('RTT de salto (milisegundos)')    
     plt.plot(x, y, '-o')
     plt.show()
+
+
+# TODO falta ver como deberia hacerse este grafico
+def rtt_between_jumps_vs_zrtt_graph(hops, z_rtt_values):
+    x_rtt = [hop.hop_numb for hop in hops]
+    y_rtt = [hop.rtt for hop in hops]
+
+    x_z_rtt = z_rtt_values
+    y_z_rtt = [hop.rtt for hop in hops]
+
+    plt.title('Gráfico de RTT entre saltos')
+    plt.xticks(range(0, hops[-1].hop_numb + 1))
+    plt.xlabel('Número de salto')
+    plt.ylabel('RTT en milisegundos')    
+    plt.plot(x_rtt, y_rtt, '-o')
+    plt.plot(x_z_rtt, y_z_rtt, '-o')
+    plt.show()
+
 
 def no_reponse_percentage(hops):
     max_ttl = len(hops)
@@ -30,6 +52,9 @@ def no_reponse_percentage(hops):
 
 def build_map(hops):
 
+    # saco null hops
+    hops = [hop for hop in hops if hop.ip_address != None]
+
     # abro db
     db_reader = geoip2.database.Reader('../database/GeoLite2-City.mmdb')
 
@@ -45,7 +70,7 @@ def build_map(hops):
                 longitudes.append(response.location.longitude)
                 countries.append(response.country.names['es'])
             except geoip2.errors.AddressNotFoundError:
-                # si caemos aca es que no encontro la ip en la db. sigue con el siguiente hop
+                # si caemos aca es que no encontro la ip en la db. Sigue con el siguiente hop
                 pass 
 
     # creo mapa centrado en el punto inicial del camino

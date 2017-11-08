@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     traceroute = Traceroute(dest, life_span)
     hops = traceroute.traceroute()
-    Plot.rtt_graph(hops)
+    Plot.rtt_between_jumps_graph(hops)
     Plot.build_map(hops)
 
 
