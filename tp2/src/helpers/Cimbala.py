@@ -5,9 +5,10 @@ tau_table = [-1, -1, -1, 1.1511, 1.4250, 1.5712, 1.6563, 1.7110, 1.7491, 1.7770,
              1.8579, 1.8649, 1.8710, 1.8764, 1.8811, 1.8853, 1.8891, 1.8926, 1.8957, 1.8985, 1.9011, 1.9035, 1.9057,
              1.9078, 1.9096, 1.9114, 1.9130, 1.9146, 1.9160, 1.9174, 1.9186, 1.9198, 1.9209, 1.9220, -1, 1.9240]
 
+#TODO borrar cuando ya no se use
 numbers = [48.9, 49.2, 49.2, 49.3, 49.3, 49.8, 49.9, 50.1, 50.2, 50.5]
 
-
+#TODO borrar cuando ya no se use
 def create_hops(list):
     hops = []
     for value in list:
@@ -20,7 +21,7 @@ def create_hops(list):
         hops.append(Hop(params))
     return hops
 
-
+#TODO borrar cuando ya no se use
 def example():
     res = cimbala(create_hops(numbers))
     for hop in res:
@@ -31,16 +32,15 @@ def cimbala(hops):
     hops.sort(key=lambda hop: hop.rtt, reverse=True)
 
     intercontinental_hops = []
-    iterate = True
+    iterate = len(hops) > 1
 
     while iterate:
+
         rtt_mean = mean(hops)
-        std_deviation = standar_deviation(hops, rtt_mean)
-
-        print("st", std_deviation)
-
-        first_element_z_rtt_value = z_rtt_value(hops[0], rtt_mean) / std_deviation
-        last_element_z_rtt_value = z_rtt_value(hops[-1], rtt_mean) / std_deviation
+        std_deviation = standard_deviation(hops, rtt_mean)
+        
+        first_element_z_rtt_value = z_rtt_value(hops[0].rtt, rtt_mean, std_deviation)
+        last_element_z_rtt_value = z_rtt_value(hops[-1].rtt, rtt_mean, std_deviation)
 
         hop = {}
 
@@ -58,8 +58,10 @@ def cimbala(hops):
         else:
             iterate = False
 
+        iterate = iterate and len(hops) > 1
+
     hops = hops + intercontinental_hops
-    hops.sort(key=lambda hop: hop.hop_numb, reverse=True)
+    hops.sort(key=lambda hop: hop.hop_numb, reverse=False)
     return hops
 
 
@@ -70,8 +72,8 @@ def is_outlier(hops, zrtt_value):
     return res
 
 
-def z_rtt_value(hop, rtt_mean):
-    return abs(hop.rtt - rtt_mean)
+def z_rtt_value(rtt, mean, std_deviation):
+    return abs(rtt - mean) / std_deviation
 
 
 def mean(list):
@@ -82,9 +84,9 @@ def mean(list):
     return sum_rtt / len(list)
 
 
-def standar_deviation(list, mean):
+def standard_deviation(list, mean):
     acum = 0
     for hop in list:
         acum += pow((hop.rtt - mean), 2)
-
+        
     return math.sqrt((1 / (len(list)-1) * acum))
