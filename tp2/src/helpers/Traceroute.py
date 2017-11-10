@@ -13,7 +13,7 @@ def create_hops(list):
     hops = []
     for value in list:
         params = {
-            'rtt': value['rtt'],
+            'rtt': round(value['rtt'], 4),
             'hop_numb': value['ttl'],
             'ip_address': value['ip_address'],
             'intercontinental_jump': False
@@ -32,7 +32,6 @@ class Traceroute:
 
     def send_packet(self, times, ttl):
         print("ttl "+str(ttl))
-        result = None
         host_ip_minimum = None
         host_ip_average = None        
         send_success = False
@@ -148,7 +147,7 @@ class Traceroute:
         hops = self.add_null_hops(hops)
 
         for hop in hops:
-            print(str(hop))
+            print(hop.to_json())
         return hops
 
         

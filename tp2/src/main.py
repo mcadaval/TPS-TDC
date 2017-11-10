@@ -1,4 +1,4 @@
-p
+
 from helpers.Traceroute import Traceroute
 import sys
 import helpers.Plotter as Plot
