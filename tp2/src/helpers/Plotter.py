@@ -57,19 +57,25 @@ def build_map(hops):
     countries = []
     for hop in hops:
         if hop.ip_address != None:
-            try:
-                response = db_reader.city(hop.ip_address)
-                latitudes.append(response.location.latitude)
-                longitudes.append(response.location.longitude)
-                if 'es' in response.country.names:
-                    countries.append(response.country.names['es'])
-                elif 'en' in response.country.names:
-                    countries.append(response.country.names['en'])
-                else:
-                    countries.append('Desconocido')
-            except geoip2.errors.AddressNotFoundError:
-                # si caemos aca es que no encontro la ip en la db. Sigue con el siguiente hop
-                pass 
+            # como la ip de mi router no figura en la db, la hardcodeo
+            if hop.ip_address == '192.168.0.1':
+                latitudes.append(-34.5189779)
+                longitudes.append(-58.4941058)
+                countries.append('Argentina')                    
+            else:
+                try:
+                    response = db_reader.city(hop.ip_address)
+                    latitudes.append(response.location.latitude)
+                    longitudes.append(response.location.longitude)
+                    if 'es' in response.country.names:
+                        countries.append(response.country.names['es'])
+                    elif 'en' in response.country.names:
+                        countries.append(response.country.names['en'])
+                    else:
+                        countries.append('Desconocido')
+                except geoip2.errors.AddressNotFoundError:
+                    # si caemos aca es que no encontro la ip en la db. Sigue con el siguiente hop
+                    pass 
 
     # creo mapa centrado en el punto inicial del camino
     mymap = gmplot.GoogleMapPlotter(latitudes[0], longitudes[0], 5)
