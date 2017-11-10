@@ -12,9 +12,10 @@ def rtt_between_jumps_graph(hops):
     plt.title('Gráfico de RTT entre saltos')
     plt.xlabel('Número de salto')
     plt.xticks(range(0, hops[-1].hop_numb + 1))
-    plt.ylabel('RTT por saltos (milisegundos)')    
+    plt.ylabel('RTT por saltos (milisegundos)')
     plt.plot(x, y, 'o')
     plt.show()
+
 
 def z_rtt_between_jumps_graph(hops, z_rtt_values):
     x = [hop.hop_numb for hop in hops]
@@ -23,9 +24,10 @@ def z_rtt_between_jumps_graph(hops, z_rtt_values):
     plt.title('Gráfico de ZRTT entre saltos')
     plt.xlabel('Número de salto')
     plt.xticks(range(0, hops[-1].hop_numb + 1))
-    plt.ylabel('ZRTT por salto')    
+    plt.ylabel('ZRTT por salto')
     plt.plot(x, y, 'o')
     plt.show()
+
 
 def no_reponse_percentage(hops):
     max_ttl = len(hops)
@@ -33,18 +35,18 @@ def no_reponse_percentage(hops):
 
     for hop in hops:
         if hop.ip_address != None:
-            ttl_responses[hop.hop_numb-1] = True
-    
+            ttl_responses[hop.hop_numb - 1] = True
+
     responses_number = 0
     for value in ttl_responses:
-        if value == True: 
+        if value == True:
             responses_number += 1
 
     percentage = 100 * responses_number / max_ttl
     return percentage
 
-def build_map(hops):
 
+def build_map(hops):
     # saco null hops
     hops = [hop for hop in hops if hop.ip_address != None]
 
@@ -61,7 +63,7 @@ def build_map(hops):
             if hop.ip_address == '192.168.0.1':
                 latitudes.append(-34.5189779)
                 longitudes.append(-58.4941058)
-                countries.append('Argentina')                    
+                countries.append('Argentina')
             else:
                 try:
                     response = db_reader.city(hop.ip_address)
@@ -75,11 +77,11 @@ def build_map(hops):
                         countries.append('Desconocido')
                 except geoip2.errors.AddressNotFoundError:
                     # si caemos aca es que no encontro la ip en la db. Sigue con el siguiente hop
-                    pass 
+                    pass
 
-    # creo mapa centrado en el punto inicial del camino
+                    # creo mapa centrado en el punto inicial del camino
     mymap = gmplot.GoogleMapPlotter(latitudes[0], longitudes[0], 5)
-    
+
     # dibujo camino
     mymap.plot(latitudes, longitudes, "green", edge_width=10)
 
@@ -88,10 +90,10 @@ def build_map(hops):
         title = "IP: " + hops[i].ip_address + "\\nTTL: " + str(hops[i].hop_numb) + "\\nPais: " + countries[i]
         if i == 0:
             color = 'red'
-            title = title + "\\nPunto inicial" 
+            title = title + "\\nPunto inicial"
         else:
             color = 'blue'
         mymap.marker(latitudes[i], longitudes[i], color, None, title)
-    
+
     # genero mapa html
     mymap.draw('./mymap.html')
