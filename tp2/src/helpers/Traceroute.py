@@ -148,6 +148,12 @@ class Traceroute:
         # agrego null hops
         hops = self.add_null_hops(hops)
 
-        for hop in hops:
-            print(hop.to_json())
+        print('[')
+        for i in range(len(hops)):
+            if i != len(hops)-1:
+                print(hops[i].to_json()+',')
+            else:
+                print(hops[i].to_json())
+        print(']')
+
         return hops

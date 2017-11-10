@@ -49,11 +49,11 @@ def cimbala(hops):
         if first_element_z_rtt_value > last_element_z_rtt_value:
             hop['hop_index'] = 0
             hop['zrtt_value'] = first_element_z_rtt_value
-            is_max = False
+            is_max = True
         else:
             hop['zrtt_value'] = last_element_z_rtt_value
             hop['hop_index'] = -1
-            is_max = True
+            is_max = False
 
         if is_outlier(hops, hop['zrtt_value']):
             if is_max:
