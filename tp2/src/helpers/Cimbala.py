@@ -90,3 +90,24 @@ def standard_deviation(list, mean):
         acum += pow((hop.rtt - mean), 2)
         
     return math.sqrt((1 / (len(list)-1) * acum))
+
+def calculate_z_rtt_values(hops):
+    # saco respuestas vacias
+    filtered_hops = [hop for hop in hops if hop.rtt != None]
+
+    z_rtts = []
+    # calculo media y desvio standard
+    mean_hops = mean(filtered_hops)
+    std_deviation = standard_deviation(filtered_hops, mean_hops)
+
+    # calculo zrtt
+    for hop in filtered_hops:
+        z_rtt = z_rtt_value(hop.rtt, mean_hops, std_deviation)
+        z_rtts.append(z_rtt)
+
+    # agrego elementos nulos para que los puntoss se correspondan con su numero de salto en el grafico
+    for i in range(0, len(hops)):
+        if hops[i].rtt == None:
+            z_rtts.insert(i, None)
+
+    return z_rtts
