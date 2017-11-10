@@ -61,7 +61,12 @@ def build_map(hops):
                 response = db_reader.city(hop.ip_address)
                 latitudes.append(response.location.latitude)
                 longitudes.append(response.location.longitude)
-                countries.append(response.country.names['es'])
+                if 'es' in response.country.names:
+                    countries.append(response.country.names['es'])
+                elif 'en' in response.country.names:
+                    countries.append(response.country.names['en'])
+                else:
+                    countries.append('Desconocido')
             except geoip2.errors.AddressNotFoundError:
                 # si caemos aca es que no encontro la ip en la db. Sigue con el siguiente hop
                 pass 
