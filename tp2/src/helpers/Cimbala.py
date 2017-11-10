@@ -1,33 +1,8 @@
 import math
-from models.Hop import Hop
 
 tau_table = [-1, -1, -1, 1.1511, 1.4250, 1.5712, 1.6563, 1.7110, 1.7491, 1.7770, 1.7984, 1.8153, 1.8290, 1.8403, 1.8498,
              1.8579, 1.8649, 1.8710, 1.8764, 1.8811, 1.8853, 1.8891, 1.8926, 1.8957, 1.8985, 1.9011, 1.9035, 1.9057,
              1.9078, 1.9096, 1.9114, 1.9130, 1.9146, 1.9160, 1.9174, 1.9186, 1.9198, 1.9209, 1.9220, -1, 1.9240]
-
-# TODO borrar cuando ya no se use
-numbers = [48.9, 49.2, 49.2, 49.3, 49.3, 49.8, 49.9, 50.1, 50.2, 50.5]
-
-
-# TODO borrar cuando ya no se use
-def create_hops(list):
-    hops = []
-    for value in list:
-        params = {
-            'rtt': value,
-            'hop_numb': 1,
-            'ip_address': "1",
-            'intercontinental_jump': False
-        }
-        hops.append(Hop(params))
-    return hops
-
-
-# TODO borrar cuando ya no se use
-def example():
-    res = cimbala(create_hops(numbers))
-    for hop in res:
-        print(hop)
 
 
 def cimbala(hops):

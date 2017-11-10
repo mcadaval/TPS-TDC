@@ -24,16 +24,18 @@ def create_hops(list):
 
 
 class Traceroute:
-    def __init__(self, dest, life_span):
+    def __init__(self, dest, life_span, debug):
         self.dest = dest
         self.life_span = life_span
+        self.debug = debug
 
     def create_packet(self, dest, ttl):
         packet = IP(dst=dest, ttl=ttl) / ICMP(type="echo-request")
         return packet
 
     def send_packet(self, times, ttl):
-        print("ttl " + str(ttl))
+        if self.debug:
+            print("ttl " + str(ttl))
         host_ip_minimum = None
         host_ip_average = None
         send_success = False
@@ -52,7 +54,8 @@ class Traceroute:
             # verifico tipo de respuesta, si es que la hay
             if response != None:
                 if response[ICMP].type == 11:  # type 11 = 'time-exceeded'
-                    print(i, ' time-exceeded')
+                    if self.debug:
+                        print(i, ' time-exceeded')
                 else:
                     if response[ICMP].type == 0:  # type 0 = 'echo-reply'
                         send_success = True
@@ -107,6 +110,7 @@ class Traceroute:
         return hops
 
     def traceroute(self):
+
         responses = []
         # envio rafagas de paquetes ICMP con distintos TTL 
         for ttl in range(self.life_span):
@@ -150,8 +154,8 @@ class Traceroute:
 
         print('[')
         for i in range(len(hops)):
-            if i != len(hops)-1:
-                print(hops[i].to_json()+',')
+            if i != len(hops) - 1:
+                print(hops[i].to_json() + ',')
             else:
                 print(hops[i].to_json())
         print(']')
