@@ -5,39 +5,46 @@ from helpers import Parser
 from helpers import GraphHelper
 import sys
 
-BAR_CHART_PROTOCOLS = False
-BAR_CHART_HOSTS = False
+BAR_CHART_PROTOCOLS = True
 HOST_GRAPH = False
 SIMPLE_HOST_GRAPH = False
+BAR_CHART_INFO_S1 = True
+BAR_CHART_INFO_S2 = True
 
 def process(rute):
     packets = rdpcap(rute)
-    symbols_capture = Parser.parse(packets)
-    source_protocols = Source(symbols_capture)
+    source_protocols = Source(Parser.parseS1(packets))
+    source_hosts = Source(Parser.parseS2(packets))
 
-    source_hosts = Source(Parser.parseSrc(packets))
+    print('Cantidad total de simbolos(S1): ', source_protocols.get_capture_size())
+    print('Entropia(S1): ', source_protocols.get_entropy())
+    print('Entropia Maxima(S1): ', source_protocols.get_max_entropy())
+    print('Cantidad de simbolos distintos(S1): ', source_protocols.get_number_of_symbols())
+    print('Porcentaje de paquetes broadcast(S1): ', source_protocols.calculate_broadcast_percentage())
+    print('\n')
+    print('Cantidad total de simbolos(S2): ', source_hosts.get_capture_size())
+    print('Entropia(S2): ', source_hosts.get_entropy())
+    print('Entropia Maxima(S2): ', source_hosts.get_max_entropy())
+    print('Cantidad de simbolos distintos(S2): ', source_hosts.get_number_of_symbols())
+    print('Informacion promedio(S2): ', source_hosts.get_average_info())
+    print('Cota de informacion para distinguir simbolos(S2): ', source_hosts.get_average_info() * 0.8)
+    
+    print('\n')    
+    print('Simbolos(S1): ')
+    source_protocols.print_symbols()
+    print('\n')    
+    print('Simbolos distinguidos(S2): ')
+    source_hosts.print_distinguished_symbols()
 
 
-    print('Cantidad total de paquetes: ', len(symbols_capture))
-    print('Entropia: ', source_protocols.get_entropy())
-    print('Entropia Maxima: ', source_protocols.get_max_entropy())
-    print(source_protocols)
-
-    print('Entropia hosts: ', source_hosts.get_entropy())
-    print('Hosts identificados: ')
-    for s in source_hosts.get_hosts():
-        print(s)
-
-    print('Porcentaje de paquetes broadcast', source_protocols.calculate_broadcast_percentage())
-
-    print('Probabilidades de protocolos', source_protocols.calculate_protocols_probabilites())
+    if BAR_CHART_INFO_S1:
+        GraphHelper.info_entropy_maxentropy(source_protocols.get_symbols_info(), source_protocols.get_entropy(), source_protocols.get_max_entropy())
+    
+    if BAR_CHART_INFO_S2:
+        GraphHelper.info_entropy_maxentropy(source_hosts.get_distinguished_symbols_info(), source_hosts.get_entropy(), source_hosts.get_max_entropy())
 
     if BAR_CHART_PROTOCOLS:
-        GraphHelper.barChar(source_protocols.calculate_protocols_probabilites(), True)
-
-    if BAR_CHART_HOSTS:
-        host_info, threshold = source_hosts.get_hosts_info()
-        GraphHelper.barChar(host_info, False, threshold)
+        GraphHelper.protocols_percentage(source_protocols.calculate_protocols_probabilites())
 
     if HOST_GRAPH:
         hostsGraph = GraphHelper.createGraph(packets)

@@ -33,7 +33,7 @@ class Source:
     
     def get_number_of_symbols(self):
         return len(self.symbols)
-
+    
     def get_symbols_ocurrences(self):
         if not self.symbols_occurrences:
             symbols_occurrences = {}
@@ -68,26 +68,29 @@ class Source:
     def get_max_entropy(self):
         return math.log2(len(self.symbols_probabilities))
 
-    def get_hosts(self):
-        tuples = [(symbol, info) for symbol, info in self.get_symbols_info().items()]
-        print('average_info: '+str(self.average_info))
-        tuples = list(filter(lambda element: element[1] < (self.average_info * 0.8), tuples))
-        return tuples
+    def get_distinguished_symbols(self):
+        return list(filter(lambda symbol: self.symbols_info[symbol] < (self.get_average_info() * 0.8), self.get_symbols_info().keys()))
 
-    def get_hosts_info(self):
-        tuples = self.get_hosts()
-        host_map = dict(tuples)
-        return host_map, self.average_info
+    def get_distinguished_symbols_info(self):
+        tuples = [(symb, self.symbols_info[symb]) for symb in self.get_distinguished_symbols()]
+        distinguished_symbols_info = dict(tuples)
+        return distinguished_symbols_info
+
+    def get_average_info(self):
+        if not self.average_info:  
+            total_info = 0
+            for symb, info in self.get_symbols_info().items():
+                total_info = total_info + info
+            self.average_info = total_info / self.get_number_of_symbols()
+        
+        return self.average_info
 
     def get_symbols_info(self):
         if not self.symbols_info:
             symbols_info = {}
-            total_info = 0
             for symb, probability in self.get_symbols_probabilites().items():            
                 info = math.log2(1 / probability)                
                 symbols_info[symb] = info
-                total_info = total_info + info
-            self.average_info = total_info / self.get_number_of_symbols()
             self.symbols_info = symbols_info
 
         return self.symbols_info
@@ -112,6 +115,17 @@ class Source:
             protocols_percentage[protocol] = protocols_percentage[protocol]/len(self.symbols_capture)
 
         return protocols_percentage
+
+    def print_symbols(self):
+        for symb in self.symbols:
+            print('Simbolo: ' + str(symb) + ' Ocurrencias: ' + str(self.symbols_occurrences[symb]) + ' Probabilidad: ' + str(self.symbols_probabilities[symb]))
+            # print(str(symb) + ' & ' + str(self.symbols_occurrences[symb]) + ' & ' + str(round(self.symbols_probabilities[symb], 5)) + ' \\\\')
+            
+
+    def print_distinguished_symbols(self):
+        for symb in self.get_distinguished_symbols():
+            print('Simbolo: ' + str(symb) + ' Ocurrencias: ' + str(self.symbols_occurrences[symb]) + ' Probabilidad: ' + str(self.symbols_probabilities[symb]))
+            # print(str(symb) + ' & ' + str(self.symbols_occurrences[symb]) + ' & ' + str(round(self.symbols_probabilities[symb], 5)) + ' \\\\')            
 
     def __str__(self):
         res = ''

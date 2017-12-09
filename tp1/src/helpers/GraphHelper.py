@@ -66,7 +66,6 @@ def unionSimilarNodes(graph):
     return networkGraph
 
 
-
 def barChar(labels_map, showLegend, threshold = 0):
     fig, ax = plt.subplots()
     index = 0
@@ -82,3 +81,46 @@ def barChar(labels_map, showLegend, threshold = 0):
         plt.legend()
     plt.show()
     
+
+def info_entropy_maxentropy(symbols_info, entropy, max_entropy):
+    fig, ax = plt.subplots()
+    y_pos = range(len(symbols_info))
+
+    tuples = [(symbol, info) for symbol, info in symbols_info.items()]
+    symbols_info = sorted(tuples, key=lambda element: element[1])
+    keys = [symbol for symbol, info in symbols_info]    
+    values = [info for symbol, info in symbols_info]
+
+    ax.barh(y_pos, values, align='center', ecolor='black')
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(keys)
+    ax.invert_yaxis()  # labels read top-to-bottom
+    ax.axvline(entropy, color='black', linestyle='dashed', linewidth=1, label="Entropía ("+str(round(entropy, 2))+")")
+    ax.axvline(max_entropy, color='red', linestyle='dashed', linewidth=1, label="Entropía máxima ("+str(round(max_entropy, 2))+")")    
+    ax.set_xlabel('Información')
+    ax.set_ylabel('Símbolos')
+    ax.set_title('Información por símbolo vs Entropía vs Entropía máxima')
+
+    for y in y_pos:
+        ax.text(0.5, y, round(symbols_info[y][1], 2), fontweight='bold')
+
+    plt.legend()
+    plt.show()
+
+def protocols_percentage(protocols_probabilities):
+    fig, ax = plt.subplots()
+    y_pos = range(len(protocols_probabilities))
+
+    ax.barh(y_pos, [prob * 100 for prob in protocols_probabilities.values()], color='red', align='center', ecolor='black')
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(protocols_probabilities.keys())
+    ax.invert_yaxis()  # labels read top-to-bottom
+    ax.set_xlabel('Porcentajes')
+    ax.set_ylabel('Protocolos')
+    ax.set_title('Porcentajes por protocolo')
+
+    for y in y_pos:
+        ax.text(0.5, y, str(round(protocols_probabilities[list(protocols_probabilities.keys())[y]]*100, 5))+'%', fontweight='bold')
+
+    plt.legend()
+    plt.show()

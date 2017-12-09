@@ -1,7 +1,7 @@
 from model.Package import Package
 
 
-def parse(packets):
+def parseS1(packets):
     symbols = []
     for pkt in packets:
         packet = Package(pkt)
@@ -9,9 +9,7 @@ def parse(packets):
 
     return symbols
 
-
-
-def parseSrc(packets):
+def parseS2(packets):
     symbols = []
     for pkt in packets:
         if 'ARP' in pkt:
